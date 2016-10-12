@@ -1,1 +1,2 @@
 Django==1.10.2
+-e git+https://github.com/Retzudo/django-emailuser.git@96f715aa02740441689024dcbcb6659101286036#egg=django_emailuser
