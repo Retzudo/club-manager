@@ -36,5 +36,6 @@ class Membership(models.Model):
     role = models.ForeignKey(
         'Role',
         null=True,
+        blank=True,
         on_delete=models.SET_NULL
     )
