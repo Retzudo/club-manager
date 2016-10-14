@@ -11,7 +11,9 @@ class UserCreationForm(DjangoUserCreationForm):
 
 
 def index(request):
-    return render(request, 'core/index.html')
+    return render(request, 'core/index.html', {
+        'clubs': request.user.clubs.all()
+    })
 
 
 def register(request):

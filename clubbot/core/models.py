@@ -12,6 +12,7 @@ class Club(models.Model):
     members = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         through='Membership',
+        related_name='clubs',
     )
 
     def __str__(self):

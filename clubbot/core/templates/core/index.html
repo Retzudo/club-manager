@@ -3,5 +3,17 @@
 {% block body %}
     <h1>Club Manager!</h1>
 
-    Hello {{ user }}!
+    <p>Hello {{ user }}!</p>
+
+    <p>
+        {% if clubs %}
+        <ul>
+        {% for club in clubs %}
+            <li>{{ club.name }}</li>
+        {% endfor %}
+        </ul>
+        {% else %}
+            <em>You don't have any clubs yet.</em>
+        {% endif %}
+    </p>
 {% endblock %}
