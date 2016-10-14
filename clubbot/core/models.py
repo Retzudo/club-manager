@@ -4,6 +4,11 @@ from django.db import models
 
 class Club(models.Model):
     name = models.CharField(max_length=255)
+    admin = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='admin'
+    )
     members = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         through='Membership',
