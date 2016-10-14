@@ -1,9 +1,13 @@
 from rest_framework import viewsets
 
 from api import serializers
-from core.models import Club
 
 
 class ClubViewSet(viewsets.ModelViewSet):
-    queryset = Club.objects.all()
     serializer_class = serializers.ClubSerializer
+
+    def get_queryset(self):
+        return self.request.user.admin_clubs.all()
+
+    def perform_create(self, serializer):
+        serializer.save(admin=self.request.user)

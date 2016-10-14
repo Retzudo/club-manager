@@ -1,0 +1,87 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'core/css/account.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div class="container" id="account-app">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        {% spaceless %}
+                            <div class="panel-heading-half panel-heading-half--left">
+                                <h3 class="panel-title">Clubs you're an admin of</h3>
+                            </div>
+                            <div class="panel-heading-half panel-heading-half--right">
+                                <button class="btn btn-default" data-toggle="modal" data-target="#new-club-modal">Add Club</button>
+                            </div>
+                        {% endspaceless %}
+                    </div>
+                    <div class="panel-body">
+                        <ul v-if="clubs.length > 0">
+                            <li v-for="club in clubs">
+                                {% verbatim %}{{ club.name }}{% endverbatim %}
+                                <button class="btn btn-danger btn-xs" @click="clubToDelete = club" data-toggle="modal" data-target="#delete-club-modal">
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                </button>
+                            </li>
+                        </ul>
+                        <em v-if="clubs.length === 0">You don't have any clubs yet.</em>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <new-club-modal inline-template class="modal fade" tabindex="-1" role="dialog" id="new-club-modal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Create New Club</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="new-club-name">Name:</label>
+                            <input id="new-club-name" class="form-control" type="text" minlength="1" placeholder="Name" required v-model="name">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" @click="createClub">Create Club</button>
+                    </div>
+                </div>
+            </div>
+        </new-club-modal>
+
+        <delete-club-modal inline-template class="modal fade" tabindex="-1" role="dialog" id="delete-club-modal" :club="clubToDelete">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Delete Club</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Really delete the club <strong>{% verbatim %}{{ name }}{% endverbatim %}</strong>? It will be gone forever!
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" @click="deleteClub">Delete Club</button>
+                    </div>
+                </div>
+            </div>
+        </delete-club-modal>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script src="{% static 'core/js/common.js' %}"></script>
+    <script src="{% static 'core/js/account.js' %}"></script>
+{% endblock %}

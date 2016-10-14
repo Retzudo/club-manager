@@ -6,4 +6,4 @@ from core.models import Club
 class ClubSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Club
-        fields = ('name',)
+        fields = ('id', 'name')

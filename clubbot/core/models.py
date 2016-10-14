@@ -7,12 +7,12 @@ class Club(models.Model):
     admin = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='admin'
+        related_name='admin_clubs'
     )
     members = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         through='Membership',
-        related_name='clubs',
+        related_name='member_clubs',
     )
 
     def __str__(self):

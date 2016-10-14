@@ -1,19 +1,11 @@
 {% extends 'core/base.html' %}
 
 {% block body %}
-    <h1>Club Manager!</h1>
-
-    <p>Hello {{ user }}!</p>
-
-    <p>
-        {% if clubs %}
-        <ul>
-        {% for club in clubs %}
-            <li>{{ club.name }}</li>
-        {% endfor %}
-        </ul>
-        {% else %}
-            <em>You don't have any clubs yet.</em>
-        {% endif %}
-    </p>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>Club Manager!</h1>
+            </div>
+        </div>
+    </div>
 {% endblock %}
