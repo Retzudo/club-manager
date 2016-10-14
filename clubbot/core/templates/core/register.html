@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+
+{% block body %}
+    {{ form.non_field_errors }}
+    <form action="{% url 'register' %}" method="post">
+        <label for="{{ form.email.id_for_label }}">E-mail address:</label>
+        {{ form.email.errors }}
+        {{ form.email }}
+
+        <label for="{{ form.password1.id_for_label }}">Password:</label>
+        {{ form.password1.errors }}
+        {{ form.password1 }}
+
+        <label for="{{ form.password2.id_for_label }}">Password:</label>
+        {{ form.password2.errors }}
+        {{ form.password2 }}
+
+        {% csrf_token %}
+
+        <button type="submit">Register</button>
+    </form>
+{% endblock %}

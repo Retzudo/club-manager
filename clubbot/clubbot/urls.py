@@ -15,14 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from rest_framework import routers
-
-from core import rest
-
-router = routers.DefaultRouter()
-router.register(r'clubs', rest.ClubViewSet)
 
 urlpatterns = [
-    url(r'^api/(?P<version>(v1))/', include(router.urls)),
     url(r'^admin/', admin.site.urls),
+    url(r'', include('core.urls')),
 ]

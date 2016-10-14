@@ -1,5 +1,8 @@
 from rest_framework import viewsets
 
+from core.models import Club
+
 
 class ClubViewSet(viewsets.ModelViewSet):
-    pass
+    queryset = Club.objects.all()
+    model = Club
