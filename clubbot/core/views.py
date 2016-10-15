@@ -54,7 +54,7 @@ def register(request):
             user = form.save()
             user.active = True
             user.save()
-            login(request, user)
+            django_login(request, user)
             return redirect(reverse('index'))
     else:
         form = UserCreationForm()
