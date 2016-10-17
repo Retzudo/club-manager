@@ -8,12 +8,12 @@
                 <form action="{% url 'login' %}" method="post">
                     <div class="form-group">
 
-                        <label for="{{ form.username.id_for_label }}">E-mail address</label>
                         {{ form.username.errors }}
+                        <label for="{{ form.username.id_for_label }}">E-mail address</label>
                         {{ form.username }}
 
-                        <label for="{{ form.password.id_for_label }}">Password</label>
                         {{ form.password.errors }}
+                        <label for="{{ form.password.id_for_label }}">Password</label>
                         {{ form.password }}
 
                         <button type="submit" class="btn btn-default">Log in</button>

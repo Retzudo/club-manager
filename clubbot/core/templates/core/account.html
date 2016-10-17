@@ -25,9 +25,6 @@
                         <ul v-if="clubs.length > 0">
                             <li v-for="club in clubs">
                                 {% verbatim %}{{ club.name }}{% endverbatim %}
-                                <button class="btn btn-danger btn-xs" @click="clubToDelete = club" data-toggle="modal" data-target="#delete-club-modal">
-                                    <i class="glyphicon glyphicon-trash"></i>
-                                </button>
                             </li>
                         </ul>
                         <em v-if="clubs.length === 0">You don't have any clubs yet.</em>
@@ -36,48 +33,7 @@
             </div>
         </div>
 
-        <new-club-modal inline-template class="modal fade" tabindex="-1" role="dialog" id="new-club-modal">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Create New Club</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="new-club-name">Name:</label>
-                            <input id="new-club-name" class="form-control" type="text" minlength="1" placeholder="Name" required v-model="name">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary" @click="createClub">Create Club</button>
-                    </div>
-                </div>
-            </div>
-        </new-club-modal>
-
-        <delete-club-modal inline-template class="modal fade" tabindex="-1" role="dialog" id="delete-club-modal" :club="clubToDelete">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Delete Club</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            Really delete the club <strong>{% verbatim %}{{ name }}{% endverbatim %}</strong>? It will be gone forever!
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-danger" @click="deleteClub">Delete Club</button>
-                    </div>
-                </div>
-            </div>
-        </delete-club-modal>
+        {% include 'core/modals/new-club.html' %}
     </div>
 {% endblock %}
 

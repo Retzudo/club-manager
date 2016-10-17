@@ -1,0 +1,22 @@
+<new-club-modal inline-template class="modal fade" tabindex="-1" role="dialog" id="new-club-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Create New Club</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="new-club-name">Name:</label>
+                    <input id="new-club-name" class="form-control" type="text" minlength="1" placeholder="Name" required
+                           v-model="name">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" @click="createClub">Create Club</button>
+            </div>
+        </div>
+    </div>
+</new-club-modal>
