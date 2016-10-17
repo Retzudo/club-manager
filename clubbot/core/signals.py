@@ -15,6 +15,7 @@ def slugify_club_name(sender, instance, raw, using, update_fields, **kwargs):
         # Check if slug already exists
         if not Club.objects.filter(slug=slug):
             instance.slug = slug
+            return
 
         slug = get_random_slug()
         while Club.objects.filter(slug=slug):
