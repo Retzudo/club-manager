@@ -1,25 +1,27 @@
 {% extends 'core/base.html' %}
+{% load widget_tweaks %}
 
 {% block body %}
     <div class="container">
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-xs-12 col-md-4 col-md-offset-4">
                 {{ form.non_field_errors }}
                 <form action="{% url 'login' %}" method="post">
                     <div class="form-group">
-
                         {{ form.username.errors }}
                         <label for="{{ form.username.id_for_label }}">E-mail address</label>
-                        {{ form.username }}
-
+                        {{ form.username|add_class:"form-control" }}
+                    </div>
+                    <div class="form-group">
                         {{ form.password.errors }}
                         <label for="{{ form.password.id_for_label }}">Password</label>
-                        {{ form.password }}
-
-                        <button type="submit" class="btn btn-default">Log in</button>
+                        {{ form.password|add_class:"form-control" }}
                     </div>
+                    <button type="submit" class="btn btn-default btn-block">Log in</button>
                     {% csrf_token %}
                 </form>
+
+                <a href="{% url 'register' %}">Register new account.</a>
             </div>
         </div>
     </div>
