@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+
+{% block body %}
+    <div class="container">
+        <h1>{{ club.name }}</h1>
+
+        {% if members %}
+            <h2>Members:</h2>
+
+            <ul>
+                {% for member in members %}
+                    <li>{{ member.id }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h2><em>No Members</em></h2>
+        {% endif %}
+
+        {% if upcoming_events %}
+            <h2>Upcoming Events:</h2>
+
+            <ul>
+                {% for event in upcoming_events %}
+                    <li><strong>{{ event.date }}:</strong> {{ event.name }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h2><em>No Events</em></h2>
+        {% endif %}
+    </div>
+{% endblock %}

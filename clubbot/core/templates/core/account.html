@@ -1,4 +1,4 @@
-{% extends 'core/base.html' %}
+{% extends 'core/backend.html' %}
 {% load static %}
 
 {% block head %}
@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block body %}
+    {{ block.super }}
     <div class="container" id="account-app">
         <div class="row">
             <div class="col-xs-12">
@@ -33,7 +34,7 @@
             </div>
         </div>
 
-        {% include 'core/modals/new-club.html' %}
+        {% include 'core/partials/modals/new-club.html' %}
     </div>
 {% endblock %}
 
