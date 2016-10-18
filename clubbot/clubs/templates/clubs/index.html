@@ -8,17 +8,30 @@
             <div class="col-lg-3">
                 <ul class="nav nav-pills nav-stacked" role="tablist">
                     <li role="presentation" class="active">
-                        <a href="#news" aria-controls="news" role="tab" data-toggle="tab">News</a>
+                        <a href="#news" aria-controls="news" role="tab" data-toggle="tab">
+                            <i class="glyphicon glyphicon-bullhorn"></i> News
+                        </a>
                     </li>
                     <li role="presentation">
-                        <a href="#events" aria-controls="events" role="tab" data-toggle="tab">Events</a>
+                        <a href="#events" aria-controls="events" role="tab" data-toggle="tab">
+                            <i class="glyphicon glyphicon-calendar"></i> Events
+                        </a>
                     </li>
                     <li role="presentation">
-                        <a href="#members" aria-controls="members" role="tab" data-toggle="tab">Members</a>
+                        <a href="#members" aria-controls="members" role="tab" data-toggle="tab">
+                            <i class=" glyphicon glyphicon-user"></i> Members
+                        </a>
                     </li>
                     {% if is_admin %}
                         <li role="presentation">
-                            <a href="#cash" aria-controls="cash" role="tab" data-toggle="tab">Cash</a>
+                            <a href="#cash" aria-controls="cash" role="tab" data-toggle="tab">
+                                <i class="glyphicon glyphicon-piggy-bank"></i> Cash
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">
+                                <i class="glyphicon glyphicon-cog"></i> Settings
+                            </a>
                         </li>
                     {% endif %}
                 </ul>
@@ -29,7 +42,7 @@
                         {% if news %}
                             <h2>News</h2>
 
-                            {% for news_item in news %}
+                            {% for news_item in club.news.all %}
                                 <div class="news">News!</div>
                             {% endfor %}
                         {% else %}
@@ -41,7 +54,7 @@
                             <h2>Upcoming Events:</h2>
 
                             <ul>
-                                {% for event in events %}
+                                {% for event in club.events.all %}
                                     <li><strong>{{ event.date }}:</strong> {{ event.name }}</li>
                                 {% endfor %}
                             </ul>
@@ -54,7 +67,7 @@
                             <h2>Members:</h2>
 
                             <ul>
-                                {% for member in members %}
+                                {% for member in club.memberships.all %}
                                     <li>{{ member.user.email }}</li>
                                 {% endfor %}
                             </ul>
@@ -65,6 +78,68 @@
                     {% if is_admin %}
                         <div role="tabpanel" class="tab-pane" id="cash">
                             <h2>Total cash: <em>{{ club.cash.currency }} {{ club.cash.total|floatformat:2 }}</em></h2>
+
+                            <table class="table table-hover">
+                                <tr>
+                                    <th></th>
+                                    <th>Amount</th>
+                                    <th>Description</th>
+                                    <th>Date</th>
+                                </tr>
+                                {% for transaction in club.cash.transactions.all %}
+                                    {% if transaction.amount < 0 %}
+                                        <tr class="danger">
+                                            <td>
+                                                <i class="glyphicon glyphicon-arrow-down"></i>
+                                            </td>
+                                            <td>
+                                                {{ transaction.negative_amount }}
+                                            </td>
+                                            <td>
+                                                {{ transaction.description }}
+                                            </td>
+                                            <td>
+                                                {{ transaction.date }}
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if transaction.amount == 0 %}
+                                        <tr>
+                                            <td>
+                                                <i class="glyphicon glyphicon-minus"></i>
+                                            </td>
+                                            <td>
+                                                {{ 0.0|floatformat:2 }}
+                                            </td>
+                                            <td>
+                                                {{ transaction.description }}
+                                            </td>
+                                            <td>
+                                                {{ transaction.date }}
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if transaction.amount > 0 %}
+                                        <tr class="success">
+                                            <td>
+                                                <i class="glyphicon glyphicon-arrow-up"></i>
+                                            </td>
+                                            <td>
+                                                {{ transaction.amount }}
+                                            </td>
+                                            <td>
+                                                {{ transaction.description }}
+                                            </td>
+                                            <td>
+                                                {{ transaction.date }}
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </table>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="settings">
+                            Settings!
                         </div>
                     {% endif %}
                 </div>
