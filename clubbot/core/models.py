@@ -111,4 +111,5 @@ class Cash(models.Model):
 class Transaction(models.Model):
     """A single transaction to or from a club's cash."""
     cash = models.ForeignKey('Cash', related_name='transactions')
-    amount = models.FloatField()
+    amount = models.DecimalField(max_digits=20, decimal_places=2)
+    description = models.CharField(max_length=255, null=True, blank=True)
