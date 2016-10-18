@@ -4,28 +4,61 @@
     <div class="container">
         <h1>{{ club.name }}</h1>
 
-        {% if members %}
-            <h2>Members:</h2>
+        <div class="row">
+            <div class="col-lg-3">
+                <ul class="nav nav-pills nav-stacked" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#news" aria-controls="news" role="tab" data-toggle="tab">News</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#events" aria-controls="events" role="tab" data-toggle="tab">Events</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#members" aria-controls="members" role="tab" data-toggle="tab">Members</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-9">
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="news">
+                        {% if news %}
+                            <h2>News</h2>
 
-            <ul>
-                {% for member in members %}
-                    <li>{{ member.id }}</li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <h2><em>No Members</em></h2>
-        {% endif %}
+                            {% for news_item in news %}
+                                <div class="news">News!</div>
+                            {% endfor %}
+                        {% else %}
+                            <h2><em>No News</em></h2>
+                        {% endif %}
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="events">
+                        {% if upcoming_events %}
+                            <h2>Upcoming Events:</h2>
 
-        {% if upcoming_events %}
-            <h2>Upcoming Events:</h2>
+                            <ul>
+                                {% for event in upcoming_events %}
+                                    <li><strong>{{ event.date }}:</strong> {{ event.name }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <h2><em>No Events</em></h2>
+                        {% endif %}
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="members">
+                        {% if members %}
+                            <h2>Members:</h2>
 
-            <ul>
-                {% for event in upcoming_events %}
-                    <li><strong>{{ event.date }}:</strong> {{ event.name }}</li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <h2><em>No Events</em></h2>
-        {% endif %}
+                            <ul>
+                                {% for member in members %}
+                                    <li>{{ member.id }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <h2><em>No Members</em></h2>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
