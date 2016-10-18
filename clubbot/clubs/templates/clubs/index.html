@@ -1,7 +1,8 @@
 {% extends 'core/base.html' %}
+{% load staticfiles %}
 
 {% block body %}
-    <div class="container">
+    <div class="container" id="club-app">
         <h1>{{ club.name }}</h1>
 
         <div class="row">
@@ -63,7 +64,7 @@
                         {% endif %}
                     </div>
                     <div role="tabpanel" class="tab-pane" id="members">
-                        {% if members %}
+                        {% if club.memberships.all %}
                             <h2>Members:</h2>
 
                             <ul>
@@ -77,66 +78,69 @@
                     </div>
                     {% if is_admin %}
                         <div role="tabpanel" class="tab-pane" id="cash">
-                            <h2>Total cash: <em>{{ club.cash.currency }} {{ club.cash.total|floatformat:2 }}</em></h2>
+                            <cash-table inline-template :club-id="{{ club.id }}">
+                                <div>
+                                    {% verbatim %}
+                                        <h2 v-if="cash">Total cash: <strong>{{ cash.currency }} {{ format(cash.total) }}</strong></h2>
+                                    {% endverbatim %}
 
-                            <table class="table table-hover">
-                                <tr>
-                                    <th></th>
-                                    <th>Amount</th>
-                                    <th>Description</th>
-                                    <th>Date</th>
-                                </tr>
-                                {% for transaction in club.cash.transactions.all %}
-                                    {% if transaction.amount < 0 %}
-                                        <tr class="danger">
-                                            <td>
-                                                <i class="glyphicon glyphicon-arrow-down"></i>
-                                            </td>
-                                            <td>
-                                                {{ transaction.negative_amount }}
-                                            </td>
-                                            <td>
-                                                {{ transaction.description }}
-                                            </td>
-                                            <td>
-                                                {{ transaction.date }}
-                                            </td>
-                                        </tr>
-                                    {% endif %}
-                                    {% if transaction.amount == 0 %}
+                                    <table class="table table-hover">
                                         <tr>
-                                            <td>
-                                                <i class="glyphicon glyphicon-minus"></i>
-                                            </td>
-                                            <td>
-                                                {{ 0.0|floatformat:2 }}
-                                            </td>
-                                            <td>
-                                                {{ transaction.description }}
-                                            </td>
-                                            <td>
-                                                {{ transaction.date }}
-                                            </td>
+                                            <th></th>
+                                            <th>Amount</th>
+                                            <th>Description</th>
+                                            <th>When</th>
                                         </tr>
-                                    {% endif %}
-                                    {% if transaction.amount > 0 %}
-                                        <tr class="success">
-                                            <td>
-                                                <i class="glyphicon glyphicon-arrow-up"></i>
-                                            </td>
-                                            <td>
-                                                {{ transaction.amount }}
-                                            </td>
-                                            <td>
-                                                {{ transaction.description }}
-                                            </td>
-                                            <td>
-                                                {{ transaction.date }}
-                                            </td>
-                                        </tr>
-                                    {% endif %}
-                                {% endfor %}
-                            </table>
+
+                                        <template v-for="transaction in transactions">
+                                            {% verbatim %}
+                                                <tr class="danger" v-if="transaction.amount < 0">
+                                                    <td>
+                                                        <i class="glyphicon glyphicon-arrow-down"></i>
+                                                    </td>
+                                                    <td>
+                                                        {{ cash.currency }} {{ format(negative(transaction.amount)) }}
+                                                    </td>
+                                                    <td>
+                                                        {{ transaction.description }}
+                                                    </td>
+                                                    <td>
+                                                        <span :title="transaction.date">{{ humanDate(transaction.date) }}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr v-if="transaction.amount == 0">
+                                                    <td>
+                                                        <i class="glyphicon glyphicon-minus"></i>
+                                                    </td>
+                                                    <td>
+                                                        {{ cash.currency }} {{ format(0) }}
+                                                    </td>
+                                                    <td>
+                                                        {{ transaction.description }}
+                                                    </td>
+                                                    <td>
+                                                        <span :title="transaction.date">{{ humanDate(transaction.date) }}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="success" v-if="transaction.amount > 0">
+                                                    <td>
+                                                        <i class="glyphicon glyphicon-arrow-up"></i>
+                                                    </td>
+                                                    <td>
+                                                        {{ cash.currency }} {{ format(transaction.amount) }}
+                                                    </td>
+                                                    <td>
+                                                        {{ transaction.description }}
+                                                    </td>
+                                                    <td>
+                                                        <span :title="transaction.date">{{ humanDate(transaction.date) }}</span>
+                                                    </td>
+                                                </tr>
+                                            {% endverbatim %}
+                                        </template>
+                                    </table>
+                                </div>
+                            </cash-table>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="settings">
                             Settings!
@@ -146,4 +150,10 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+    <script src="{% static 'clubs/js/cash.js' %}"></script>
 {% endblock %}

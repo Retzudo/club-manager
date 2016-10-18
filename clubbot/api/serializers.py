@@ -13,6 +13,8 @@ class ClubSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class TransactionSerializer(serializers.HyperlinkedModelSerializer):
+    amount = serializers.FloatField()
+
     class Meta:
         model = Transaction
         fields = ('amount', 'description', 'date')
