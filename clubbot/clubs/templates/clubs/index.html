@@ -16,6 +16,11 @@
                     <li role="presentation">
                         <a href="#members" aria-controls="members" role="tab" data-toggle="tab">Members</a>
                     </li>
+                    {% if is_admin %}
+                        <li role="presentation">
+                            <a href="#cash" aria-controls="cash" role="tab" data-toggle="tab">Cash</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
             <div class="col-lg-9">
@@ -32,11 +37,11 @@
                         {% endif %}
                     </div>
                     <div role="tabpanel" class="tab-pane" id="events">
-                        {% if upcoming_events %}
+                        {% if events %}
                             <h2>Upcoming Events:</h2>
 
                             <ul>
-                                {% for event in upcoming_events %}
+                                {% for event in events %}
                                     <li><strong>{{ event.date }}:</strong> {{ event.name }}</li>
                                 {% endfor %}
                             </ul>
@@ -50,13 +55,18 @@
 
                             <ul>
                                 {% for member in members %}
-                                    <li>{{ member.id }}</li>
+                                    <li>{{ member.user.email }}</li>
                                 {% endfor %}
                             </ul>
                         {% else %}
                             <h2><em>No Members</em></h2>
                         {% endif %}
                     </div>
+                    {% if is_admin %}
+                        <div role="tabpanel" class="tab-pane" id="cash">
+                            <h2>Total cash: <em>{{ club.cash.currency }} {{ club.cash.total|floatformat:2 }}</em></h2>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

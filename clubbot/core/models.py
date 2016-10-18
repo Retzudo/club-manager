@@ -7,12 +7,21 @@ class Club(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
 
+    def user_is_admin(self, user):
+        membership = Membership.objects.get(user=user, club=self)
+        return membership.role == self.get_admin_role()
+
+    def get_admin_role(self):
+        return self.roles.get(name=Role.ADMIN_ROLE)
+
     def __str__(self):
         return self.name
 
 
 class Role(models.Model):
     """A role a member can have."""
+    ADMIN_ROLE = 'Administrator'
+
     name = models.CharField(max_length=255)
     can_delete = models.BooleanField(default=True)
     club = models.ForeignKey(
@@ -24,7 +33,7 @@ class Role(models.Model):
     @classmethod
     def new_admin_role(cls, club):
         role = cls(club=club)
-        role.name = 'Administrator'
+        role.name = Role.ADMIN_ROLE
         role.can_delete = False
         return role
 
@@ -69,7 +78,7 @@ class News(models.Model):
     title = models.CharField(max_length=255)
     text = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
-    club = models.ForeignKey('Club')
+    club = models.ForeignKey('Club', related_name='news')
 
     class Meta:
         ordering = ('-date',)
@@ -93,6 +102,10 @@ class Cash(models.Model):
     """The available cash of a club. Sum of transactions."""
     currency = models.CharField(max_length=3, default='EUR')
     club = models.OneToOneField('Club', related_name='cash')
+
+    @property
+    def total(self):
+        return sum([transaction.amount for transaction in self.transactions.all()])
 
 
 class Transaction(models.Model):

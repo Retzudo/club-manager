@@ -15,7 +15,7 @@
                     <div class="panel-heading">
                         {% spaceless %}
                             <div class="panel-heading-half panel-heading-half--left">
-                                <h3 class="panel-title">Clubs you're an admin of</h3>
+                                <h3 class="panel-title">Clubs you're a member of</h3>
                             </div>
                             <div class="panel-heading-half panel-heading-half--right">
                                 <button class="btn btn-default" data-toggle="modal" data-target="#new-club-modal">Add Club</button>
@@ -25,7 +25,9 @@
                     <div class="panel-body">
                         <ul v-if="clubs.length > 0">
                             <li v-for="club in clubs">
-                                {% verbatim %}{{ club.name }}{% endverbatim %}
+                                {% verbatim %}
+                                    {{ club.name }} <em>{{ club.slug }}</em>
+                                {% endverbatim %}
                             </li>
                         </ul>
                         <em v-if="clubs.length === 0">You don't have any clubs yet.</em>
