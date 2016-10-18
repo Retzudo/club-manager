@@ -6,20 +6,10 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-md-4 col-md-offset-4">
-                {{ form.non_field_errors }}
                 <form action="{% url 'login' %}" method="post">
-                    <div class="form-group">
-                        <label for="{{ form.username.id_for_label }}" class="control-label">{{ form.username.label }}</label>
-                        {{ form.username|add_class:"form-control" }}
-                        <div class="help-block">{{ form.username.errors }}</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="{{ form.password.id_for_label }}" class="control-label">{{ form.password.label }}</label>
-                        {{ form.password|add_class:"form-control" }}
-                        <div class="help-block">{{ form.password.errors }}</div>
-                    </div>
-                    <button type="submit" class="btn btn-default btn-block">Log in</button>
+                    {% include 'core/partials/form.html' with form=form %}
                     {% csrf_token %}
+                    <button type="submit" class="btn btn-default btn-block">Log in</button>
                 </form>
 
                 <a href="{% url 'register' %}">Register new account.</a>
