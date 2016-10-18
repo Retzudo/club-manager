@@ -6,16 +6,6 @@ class Club(models.Model):
     """A club."""
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
-    admin = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='admin_clubs'
-    )
-    members = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        through='Membership',
-        related_name='member_clubs',
-    )
 
     def __str__(self):
         return self.name
@@ -24,10 +14,26 @@ class Club(models.Model):
 class Role(models.Model):
     """A role a member can have."""
     name = models.CharField(max_length=255)
+    can_delete = models.BooleanField(default=True)
     club = models.ForeignKey(
         'Club',
         on_delete=models.CASCADE,
+        related_name='roles',
     )
+
+    @classmethod
+    def new_admin_role(cls, club):
+        role = cls(club=club)
+        role.name = 'Administrator'
+        role.can_delete = False
+        return role
+
+    @classmethod
+    def new_member_role(cls, club):
+        role = cls(club=club)
+        role.name = 'Member'
+        role.can_delete = False
+        return role
 
     def __str__(self):
         return self.name
@@ -35,24 +41,27 @@ class Role(models.Model):
 
 class Membership(models.Model):
     """A user-club relationship."""
-    name = models.CharField(max_length=255)
-    title = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, null=True, blank=True)
+    title = models.CharField(max_length=255, null=True, blank=True)
     bio = models.TextField()
     club = models.ForeignKey(
         'Club',
         on_delete=models.CASCADE,
+        related_name='memberships',
     )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         null=True,
-        blank=True
+        blank=True,
+        related_name='memberships',
     )
     role = models.ForeignKey(
         'Role',
         null=True,
         blank=True,
-        on_delete=models.SET_NULL
+        on_delete=models.SET_NULL,
+        related_name='memberships',
     )
 
 
@@ -76,14 +85,14 @@ class Event(models.Model):
     club = models.ForeignKey(
         'Club',
         related_name='events',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
 
 
 class Cash(models.Model):
     """The available cash of a club. Sum of transactions."""
     currency = models.CharField(max_length=3, default='EUR')
-    club = models.OneToOneField('Club')
+    club = models.OneToOneField('Club', related_name='cash')
 
 
 class Transaction(models.Model):

@@ -1,8 +1,8 @@
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.utils.text import slugify
 
-from core.models import Club
+from core.models import Club, Role
 from core.utils.names import get_random_slug
 
 
@@ -22,3 +22,13 @@ def slugify_club_name(sender, instance, raw, using, update_fields, **kwargs):
             slug = get_random_slug()
 
         instance.slug = slug
+
+
+@receiver(post_save, sender=Club)
+def add_default_roles(instance, raw, created, using, update_fields, **kwargs):
+    if created:
+        admin_role = Role.new_admin_role(club=instance)
+        member_role = Role.new_member_role(club=instance)
+
+        admin_role.save()
+        member_role.save()
