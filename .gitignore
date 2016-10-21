@@ -5,4 +5,4 @@ __pycache__
 *.sqlite3
 .idea
 
-dist/main.js
+static/dist/js/main.js
