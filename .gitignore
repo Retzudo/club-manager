@@ -1,5 +1,8 @@
 env/
+node_modules/
 .pyc
 __pycache__
 *.sqlite3
 .idea
+
+dist/main.js

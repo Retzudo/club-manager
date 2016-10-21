@@ -20,10 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'h#xsi&311$e-6ey@xtyi4_9s^cn8v&8c$#c^b*s4_-&s#x_9v2'
+SECRET_KEY = os.environ.get('CLUBBOT_SECRET_KEY', 'h#xsi&311$e-6ey@xtyi4_9s^cn8v&8c$#c^b*s4_-&s#x_9v2')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True if os.environ.get('CLUBBOT_DEBUG', False) else False
 
 ALLOWED_HOSTS = []
 
@@ -125,6 +125,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, '../static/dist')
+]
 
 AUTH_USER_MODEL = 'emailuser.User'
 
