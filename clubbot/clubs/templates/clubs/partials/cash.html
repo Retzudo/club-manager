@@ -1,0 +1,63 @@
+<cash-table inline-template :club-id="{{ club.id }}">
+    <div>
+        {% verbatim %}
+            <h2 v-if="cash">Total cash: <strong>{{ cash.currency }} {{ format(cash.total) }}</strong></h2>
+        {% endverbatim %}
+
+        <table class="table table-hover">
+            <tr>
+                <th></th>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>When</th>
+            </tr>
+
+            <template v-for="transaction in transactions">
+                {% verbatim %}
+                    <tr class="danger" v-if="transaction.amount < 0">
+                        <td>
+                            <i class="glyphicon glyphicon-arrow-down"></i>
+                        </td>
+                        <td>
+                            {{ cash.currency }} {{ format(negative(transaction.amount)) }}
+                        </td>
+                        <td>
+                            {{ transaction.description }}
+                        </td>
+                        <td>
+                            <span :title="transaction.date">{{ humanDate(transaction.date) }}</span>
+                        </td>
+                    </tr>
+                    <tr v-if="transaction.amount == 0">
+                        <td>
+                            <i class="glyphicon glyphicon-minus"></i>
+                        </td>
+                        <td>
+                            {{ cash.currency }} {{ format(0) }}
+                        </td>
+                        <td>
+                            {{ transaction.description }}
+                        </td>
+                        <td>
+                            <span :title="transaction.date">{{ humanDate(transaction.date) }}</span>
+                        </td>
+                    </tr>
+                    <tr class="success" v-if="transaction.amount > 0">
+                        <td>
+                            <i class="glyphicon glyphicon-arrow-up"></i>
+                        </td>
+                        <td>
+                            {{ cash.currency }} {{ format(transaction.amount) }}
+                        </td>
+                        <td>
+                            {{ transaction.description }}
+                        </td>
+                        <td>
+                            <span :title="transaction.date">{{ humanDate(transaction.date) }}</span>
+                        </td>
+                    </tr>
+                {% endverbatim %}
+            </template>
+        </table>
+    </div>
+</cash-table>

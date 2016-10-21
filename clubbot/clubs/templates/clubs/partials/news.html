@@ -1,0 +1,9 @@
+{% if news %}
+    <h2>News</h2>
+
+    {% for news_item in club.news.all %}
+        <div class="news">News!</div>
+    {% endfor %}
+{% else %}
+    <h2><em>No News</em></h2>
+{% endif %}
