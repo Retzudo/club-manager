@@ -1,11 +1,14 @@
 from django.conf import settings
 from django.db import models
+from django.utils.translation import ugettext as _
 
 
 class Club(models.Model):
     """A club."""
     name = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, error_messages={
+        'unique': _('A club with that slug already exists.')
+    })
 
     def user_is_admin(self, user):
         membership = Membership.objects.get(user=user, club=self)
