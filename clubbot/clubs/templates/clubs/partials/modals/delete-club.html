@@ -1,5 +1,5 @@
 <delete-club-modal inline-template class="modal fade" tabindex="-1" role="dialog" id="delete-club-modal"
-                   :club="clubToDelete">
+                   :club-id="{{ club.id }}">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <p>
-                    Really delete the club <strong>{% verbatim %}{{ name }}{% endverbatim %}</strong>? It will be gone
+                    Really delete the club <strong>{{ club.name }}</strong>? It will be gone
                     forever!
                 </p>
             </div>

@@ -143,17 +143,27 @@
                             </cash-table>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="settings">
-                            Settings!
+                            <div class="panel panel-danger">
+                                <div class="panel-heading">
+                                    Danger Zone!
+                                </div>
+                                <div class="panel-body">
+                                    <button class="btn btn-danger" data-toggle="modal" data-target="#delete-club-modal">Delete</button>
+                                </div>
+                            </div>
                         </div>
                     {% endif %}
                 </div>
             </div>
         </div>
+
+        {% include 'clubs/partials/modals/delete-club.html' %}
     </div>
 {% endblock %}
 
 {% block javascript %}
     {{ block.super }}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
-    <script src="{% static 'clubs/js/cash.js' %}"></script>
+    <script src="{% static 'core/js/common.js' %}"></script>
+    <script src="{% static 'clubs/js/club.js' %}"></script>
 {% endblock %}

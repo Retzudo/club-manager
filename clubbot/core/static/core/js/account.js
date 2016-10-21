@@ -1,5 +1,7 @@
 var eventBus = new Vue();
 
+Vue.http.headers.common['X-CSRFToken'] = getCookie('csrftoken');
+
 Vue.component('new-club-modal', {
     data: function () {
         return {
@@ -11,16 +13,8 @@ Vue.component('new-club-modal', {
         createClub: function (event) {
             var that = this;
             if (this.name) {
-                fetch('/api/v1/clubs/', {
-                    method: 'POST',
-                    credentials: 'same-origin',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')
-                    },
-                    body: JSON.stringify({
-                        'name': this.name
-                    })
+                this.$http.post('/api/v1/clubs/', {
+                    'name': this.name
                 })
                 .then(function (response) {
                     return response.json();
@@ -35,35 +29,6 @@ Vue.component('new-club-modal', {
 
         closeModal: function () {
             $(this.$el).modal('hide');
-        }
-    }
-});
-
-Vue.component('delete-club-modal', {
-    props: ['club'],
-
-    methods: {
-        deleteClub: function () {
-            var that = this;
-            fetch('/api/v1/clubs/' + that.club.id + '/', {
-                method: 'DELETE',
-                credentials: 'same-origin',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
-                }
-            }).then(function (response) {
-                if (response.ok) {
-                    $(that.$el).modal('hide');
-                    eventBus.$emit('delete-club', that.club.id);
-                }
-            });
-        }
-    },
-
-    computed: {
-        name: function () {
-            return this.club ? this.club.name : '';
         }
     }
 });
