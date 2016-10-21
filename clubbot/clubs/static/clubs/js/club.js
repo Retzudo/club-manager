@@ -84,7 +84,6 @@ Vue.component('slug-changer', {
             .catch(function (error) {
                 return error.json();
             }).then(function (data) {
-                console.log(data);
                 that.errors = data;
             });
         }
