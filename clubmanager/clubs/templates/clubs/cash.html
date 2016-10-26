@@ -1,0 +1,17 @@
+{% extends 'clubs/club-base.html' %}
+{% load staticfiles %}
+
+{% block navigation %}
+    {% include 'clubs/partials/navigation.html' with active='cash' %}
+{% endblock %}
+
+{% block content %}
+    {% include 'clubs/partials/cash.html' %}
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+    <script src="{% static 'core/js/common.js' %}"></script>
+    <script src="{% static 'clubs/js/cash.js' %}"></script>
+{% endblock %}

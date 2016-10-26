@@ -1,44 +1,7 @@
 Vue.http.headers.common['X-CSRFToken'] = getCookie('csrftoken');
 Vue.http.options.emulateJSON = true;
 
-Vue.component('cash-table', {
-    props: ['clubId'],
-    data: function () {
-        return {
-            cash: null,
-            transactions: []
-        };
-    },
 
-    mounted: function () {
-        var that = this;
-        this.$http.get('/api/v1/clubs/' + this.clubId + '/cash')
-        .then(function (response) {
-            return response.json();
-        }).then(function (data) {
-            that.cash = data;
-        });
-
-        this.$http.get('/api/v1/clubs/' + this.clubId + '/cash/transactions')
-        .then(function (response) {
-            return response.json();
-        }).then(function (data) {
-            that.transactions = data;
-        });
-    },
-
-    methods: {
-        negative: function (number) {
-            return number * -1;
-        },
-        format: function (number) {
-            return number.toFixed(2);
-        },
-        humanDate: function (dateString) {
-            return moment.utc(dateString).fromNow();
-        }
-    }
-});
 
 Vue.component('delete-club-modal', {
     props: ['clubId'],
@@ -79,7 +42,7 @@ Vue.component('slug-changer', {
             .then(function (data) {
                 that.errors = [];
                 that.club = data;
-                window.location = '/clubs/' + data.slug;
+                window.location = '/clubs/' + data.slug + '/settings';
             })
             .catch(function (error) {
                 return error.json();
@@ -110,5 +73,5 @@ Vue.component('club-settings', {
 });
 
 new Vue({
-    el: '#club-app',
+    el: '#settings',
 });

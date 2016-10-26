@@ -8,5 +8,5 @@ urlpatterns = [
     url(r'^login$', views.login, name='login'),
     url(r'^logout$', views.logout, name='logout'),
     url(r'^register$', views.register, name='register'),
-    url(r'^clubs/(?P<slug>[-\w]+)', include('clubs.urls', namespace='clubs'))
+    url(r'^clubs/(?P<slug>[-\w]+)/', include('clubs.urls', namespace='clubs'))
 ]

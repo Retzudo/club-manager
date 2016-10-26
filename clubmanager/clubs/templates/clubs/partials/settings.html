@@ -1,35 +1,37 @@
-<club-settings inline-template :club-id="{{ club.id }}">
-    <div>
-        <div class="panel panel-default">
-            <div class="panel-heading">Slug</div>
-            <div class="panel-body">
-                <slug-changer inline-template :club="club">
-                    <form @submit.prevent="change">
-                        <p>
-                            The slug is the piece of text (<strong>{{ club.slug }}</strong>) by which your
-                            club is accessed by in the URL.
-                        </p>
-                        <div class="alert alert-danger" v-if="errors && errors.slug.length > 0">
-                            <ul>
-                                <li v-for="error in errors.slug">
-                                    {% templatetag openvariable %} error {% templatetag closevariable %}
-                                </li>
-                            </ul>
-                        </div>
-                        <input type="text" v-if="club" v-model="club.slug">
-                        <button class="btn btn-default" type="submit">Save</button>
-                    </form>
-                </slug-changer>
+<div id="settings">
+    <club-settings inline-template :club-id="{{ club.id }}">
+        <div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Slug</div>
+                <div class="panel-body">
+                    <slug-changer inline-template :club="club">
+                        <form @submit.prevent="change">
+                            <p>
+                                The slug is the piece of text (<strong>{{ club.slug }}</strong>) by which your
+                                club is accessed by in the URL.
+                            </p>
+                            <div class="alert alert-danger" v-if="errors && errors.slug && errors.slug.length > 0">
+                                <ul>
+                                    <li v-for="error in errors.slug">
+                                        {% templatetag openvariable %} error {% templatetag closevariable %}
+                                    </li>
+                                </ul>
+                            </div>
+                            <input type="text" v-if="club" v-model="club.slug">
+                            <button class="btn btn-default" type="submit">Save</button>
+                        </form>
+                    </slug-changer>
+                </div>
             </div>
-        </div>
 
-        <div class="panel panel-danger">
-            <div class="panel-heading">
-                Danger Zone!
-            </div>
-            <div class="panel-body">
-                <button class="btn btn-danger" data-toggle="modal" data-target="#delete-club-modal">Delete</button>
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    Danger Zone!
+                </div>
+                <div class="panel-body">
+                    <button class="btn btn-danger" data-toggle="modal" data-target="#delete-club-modal">Delete</button>
+                </div>
             </div>
         </div>
-    </div>
-</club-settings>
+    </club-settings>
+</div>

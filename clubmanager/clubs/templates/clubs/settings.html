@@ -1,0 +1,16 @@
+{% extends 'clubs/club-base.html' %}
+{% load staticfiles %}
+
+{% block navigation %}
+    {% include 'clubs/partials/navigation.html' with active='settings' %}
+{% endblock %}
+
+{% block content %}
+    {% include 'clubs/partials/settings.html' %}
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'core/js/common.js' %}"></script>
+    <script src="{% static 'clubs/js/settings.js' %}"></script>
+{% endblock %}
