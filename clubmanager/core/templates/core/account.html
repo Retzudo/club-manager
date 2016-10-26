@@ -25,9 +25,8 @@
                     <div class="panel-body">
                         <ul v-if="clubs.length > 0">
                             <li v-for="club in clubs">
-                                {% verbatim %}
-                                    {{ club.name }} <em>{{ club.slug }}</em>
-                                {% endverbatim %}
+                                {% templatetag openvariable %} club.name {% templatetag closevariable %}
+                                <em>{% templatetag openvariable %} club.slug {% templatetag closevariable %}</em>
                             </li>
                         </ul>
                         <em v-if="clubs.length === 0">You don't have any clubs yet.</em>

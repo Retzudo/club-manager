@@ -9,10 +9,10 @@
                             The slug is the piece of text (<strong>{{ club.slug }}</strong>) by which your
                             club is accessed by in the URL.
                         </p>
-                        <div class="alert alert-danger" v-if="errors">
-                            <ul v-if="errors.slug.length > 0">
+                        <div class="alert alert-danger" v-if="errors && errors.slug.length > 0">
+                            <ul>
                                 <li v-for="error in errors.slug">
-                                    {% verbatim %}{{ error }}{% endverbatim %}
+                                    {% templatetag openvariable %} error {% templatetag closevariable %}
                                 </li>
                             </ul>
                         </div>
