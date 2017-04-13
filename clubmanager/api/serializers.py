@@ -4,12 +4,11 @@ from core.models import Club, Cash, Transaction
 
 
 class ClubSerializer(serializers.HyperlinkedModelSerializer):
+    slug = serializers.SlugField(required=False)
+
     class Meta:
         model = Club
         fields = ('id', 'name', 'slug')
-        # Slug is not required because it will be generated
-        # if left out.
-        extra_kwargs = {'slug': {'required': False}}
 
 
 class TransactionSerializer(serializers.HyperlinkedModelSerializer):
