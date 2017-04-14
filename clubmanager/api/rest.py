@@ -1,8 +1,10 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework import viewsets
+from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.viewsets import ViewSet
 
 from api import serializers
 from core.models import Membership, Club, Role
@@ -25,27 +27,24 @@ class ClubViewSet(viewsets.ModelViewSet):
 
         default_membership.save()
 
-
-class CashView(APIView):
-    def get(self, request, club_id, *args, **kwargs):
-        club = get_object_or_404(Club, pk=club_id)
+    @detail_route()
+    def cash(self, request, pk=None):
+        club = self.get_object()
         serializer = serializers.CashSerializer(club.cash)
 
         return Response(serializer.data)
 
 
-class TransactionsList(APIView):
-    def get(self, request, club_id, *args, **kwargs):
-        club = get_object_or_404(Club, pk=club_id)
+class TransactionsViewSet(ViewSet):
+    def list(self, request, club_pk=None):
+        club = get_object_or_404(Club, pk=club_pk)
         serializer = serializers.TransactionSerializer(club.cash.transactions.all(), many=True)
 
         return Response(serializer.data)
 
-    def post(self, request, club_id, *args, **kwargs):
-        club = get_object_or_404(Club, pk=club_id)
+    def create(self, request, club_pk=None):
+        club = get_object_or_404(Club, pk=club_pk)
         serializer = serializers.TransactionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(cash=club.cash)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

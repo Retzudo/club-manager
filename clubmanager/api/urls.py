@@ -1,13 +1,15 @@
 from django.conf.urls import url, include
-from rest_framework import routers
+from rest_framework_nested import routers
 
 from api import rest
 
-router = routers.DefaultRouter()
+router = routers.SimpleRouter()
 router.register(r'clubs', rest.ClubViewSet, base_name='clubs')
+
+transactions_router = routers.NestedSimpleRouter(router, 'clubs', lookup='club')
+transactions_router.register('transactions', rest.TransactionsViewSet, base_name='transactions')
 
 urlpatterns = [
     url(r'', include(router.urls)),
-    url(r'clubs/(?P<club_id>\d+)/cash/transactions', rest.TransactionsList.as_view(), name='cash'),
-    url(r'clubs/(?P<club_id>\d+)/cash', rest.CashView.as_view(), name='cash'),
+    url(r'', include(transactions_router.urls)),
 ]
