@@ -89,16 +89,21 @@ class News(models.Model):
 
 class Event(models.Model):
     """Events like festivals concerning the club."""
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField(null=True, blank=True)
-    location = models.CharField(max_length=255)
+    start_date = models.DateField()
+    end_date = models.DateField(null=True, blank=True)
+    start_time = models.TimeField(null=True, blank=True)
+    end_time = models.TimeField(null=True, blank=True)
     title = models.CharField(max_length=255)
-    description = models.TextField()
+    location = models.CharField(max_length=255, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     club = models.ForeignKey(
         'Club',
         related_name='events',
         on_delete=models.CASCADE,
     )
+
+    class Meta:
+        ordering = ('-start_date', '-start_time')
 
 
 class Cash(models.Model):

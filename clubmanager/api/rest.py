@@ -1,16 +1,16 @@
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.decorators import detail_route
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.viewsets import ViewSet
 
 from api import serializers
-from core.models import Membership, Club, Role
+from core.models import Membership, Club, Role, Event, Transaction
 
 
-class ClubViewSet(viewsets.ModelViewSet):
+class ClubModelViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ClubSerializer
 
     def get_queryset(self):
@@ -34,17 +34,49 @@ class ClubViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
+    @detail_route()
+    def transactions(self, request, pk=None):
+        club = self.get_object()
+        serializer = serializers.TransactionSerializer(club.cash.transactions.all(), many=True)
 
-class TransactionsViewSet(ViewSet):
+        return Response(serializer.data)
+
+
+class TransactionsModelViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.TransactionSerializer
+    queryset = Transaction.objects.all()
+    http_method_names = ['post', 'put', 'patch', 'delete', 'head']
+
+    def perform_create(self, serializer):
+        try:
+            club = Club.objects.get()
+        except Club.DoesNotExist:
+            raise ValidationError()
+
+        serializer.save(cash=club.cash)
+
+
+class EventsViewSet(viewsets.ViewSet):
     def list(self, request, club_pk=None):
         club = get_object_or_404(Club, pk=club_pk)
-        serializer = serializers.TransactionSerializer(club.cash.transactions.all(), many=True)
+        serializer = serializers.EventSerializer(club.events.all(), many=True)
 
         return Response(serializer.data)
 
     def create(self, request, club_pk=None):
         club = get_object_or_404(Club, pk=club_pk)
-        serializer = serializers.TransactionSerializer(data=request.data)
+        serializer = serializers.EventSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(cash=club.cash)
+            serializer.save(club=club)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def destroy(self, request, club_pk=None, pk=None):
+        club = get_object_or_404(Club, pk=club_pk)
+
+        try:
+            event = club.events.get(pk=pk)
+        except Event.DoesNotExist:
+            raise Http404
+
+        event.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
