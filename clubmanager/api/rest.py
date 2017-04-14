@@ -41,19 +41,42 @@ class ClubModelViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
+    @detail_route()
+    def events(self, request, pk=None):
+        club = self.get_object()
+        serializer = serializers.EventSerializer(club.events.all(), many=True)
+
+        return Response(serializer.data)
+
 
 class TransactionsModelViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.TransactionSerializer
-    queryset = Transaction.objects.all()
+    queryset = Transaction.objects.none()
     http_method_names = ['post', 'put', 'patch', 'delete', 'head']
 
     def perform_create(self, serializer):
+        # TODO Check permissions
+        try:
+            club = Club.objects.get(pk=serializer.validated_data.get('cash').get('club').get('id'))
+        except Club.DoesNotExist:
+            raise ValidationError(detail='Club not found')
+
+        serializer.save(cash=club.cash)
+
+
+class EventsModelViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.EventSerializer
+    queryset = Transaction.objects.none()
+    http_method_names = ['post', 'put', 'patch', 'delete', 'head']
+
+    def perform_create(self, serializer):
+        # TODO Check permissions
         try:
             club = Club.objects.get()
         except Club.DoesNotExist:
-            raise ValidationError()
+            raise ValidationError(detail='Club not found')
 
-        serializer.save(cash=club.cash)
+        serializer.save(club=club)
 
 
 class EventsViewSet(viewsets.ViewSet):

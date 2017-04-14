@@ -14,13 +14,11 @@ class ClubSerializer(serializers.ModelSerializer):
 class TransactionSerializer(serializers.ModelSerializer):
     amount = serializers.FloatField()
     id = serializers.ReadOnlyField()
+    club_id = serializers.IntegerField(source='cash.club.id')
 
     class Meta:
         model = Transaction
         fields = ('id', 'amount', 'description', 'club_id')
-
-    def get_field_names(self, declared_fields, info):
-        return ['id', 'amount', 'description']
 
 
 class CashSerializer(serializers.ModelSerializer):
